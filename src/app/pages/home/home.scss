@@ -1,0 +1,105 @@
+// Stili generali e variabili
+:host {
+  font-family: Arial, sans-serif;
+  background-color: #141414;
+  color: #fff;
+  display: block;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+// Stili dell'Header
+.main-header {
+  background-color: #000;
+  padding: 15px 0;
+  border-bottom: 2px solid #E50914; // Rosso stile Netflix/Cinema
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cinema-title {
+    margin: 0;
+    font-size: 2rem;
+    color: #E50914;
+  }
+
+  .login-button {
+    background-color: #E50914;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #f6121d;
+    }
+  }
+}
+
+// Sezione "In Programmazione"
+.now-showing {
+  padding: 40px 0;
+
+  h2 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+}
+
+// Griglia dei film
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.movie-card {
+  background-color: #1f1f1f;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.7);
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    margin: 15px;
+  }
+
+  .showtimes {
+    padding: 0 15px 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    span {
+      background-color: #333;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+  }
+}
