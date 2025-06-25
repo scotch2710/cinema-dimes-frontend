@@ -71,6 +71,8 @@
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0,0,0,0.5);
   transition: transform 0.3s, box-shadow 0.3s;
+  text-decoration: none; // Rimuove la sottolineatura dal link.
+  color: inherit;      // Dice al testo del link di ereditare il colore del suo genitore.
   cursor: pointer;
 
   &:hover {

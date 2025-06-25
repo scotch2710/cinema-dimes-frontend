@@ -8,33 +8,28 @@
 <main class="container">
   <section class="now-showing">
     <h2>In Programmazione</h2>
+
     <div class="movie-grid">
-      <div class="movie-card">
-        <img src="https://static.posters.cz/image/1300/122815.jpg" alt="Locandina film Dune">
-        <h3>Dune: Parte Due</h3>
-        <div class="showtimes">
-          <span>17:00</span>
-          <span>20:00</span>
-          <span>22:30</span>
+      
+      @for (film of films; track film.id) {
+        <a [routerLink]="['/film', film.id]" class="movie-card" title="Clicca per dettagli e orari">
+          
+          <img [src]="'http://localhost:8080' + film.percorsoLocandina" [alt]="'Locandina di ' + film.titolo">
+          
+          <h3>{{ film.titolo }}</h3>
+          
+          <div class="showtimes">
+            <span>17:00</span>
+            <span>20:00</span>
+            <span>22:30</span>
+          </div>
+        </a>
+      } @empty {
+        <div class="empty-state">
+          <p>Nessun film in programmazione al momento. Riprova più tardi.</p>
         </div>
-      </div>
+      }
 
-      <div class="movie-card">
-        <img src="https://image.tmdb.org/t/p/w500/d5NXSklXo0qyIY2VIGHxeL1X1gQ.jpg" alt="Locandina film Oppenheimer">
-        <h3>Oppenheimer</h3>
-        <div class="showtimes">
-          <span>18:00</span>
-          <span>21:00</span>
-        </div>
-      </div>
-
-      <div class="movie-card">
-        <img src="https://image.tmdb.org/t/p/w500/s9YTxwaByIom8cWc53s0O3i0j3N.jpg" alt="Locandina film Interstellar">
-        <h3>Interstellar</h3>
-        <div class="showtimes">
-          <span>21:30</span>
-        </div>
-      </div>
-       </div>
+    </div>
   </section>
 </main>
