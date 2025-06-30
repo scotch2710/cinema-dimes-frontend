@@ -27,7 +27,12 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              {
+                "glob": "silent-check-sso.html",
+                "input": "public",
+                "output": "/"
+             }
             ],
             "styles": [
               "src/styles.scss"

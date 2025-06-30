@@ -1,0 +1,18 @@
+<header class="main-header">
+  <div class="container">
+    <h1 class="cinema-title">Cinema DIMES</h1>
+
+    @if (isLoggedIn) {
+      <div class="user-info">
+        <span>Benvenuto, {{ username }}</span>
+        <button class="logout-button" (click)="logout()">Logout</button>
+      </div>
+    } @else {
+      <button class="login-button" (click)="login()">Login</button>
+    }
+  </div>
+</header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
