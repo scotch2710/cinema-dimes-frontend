@@ -16,7 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     KeycloakService,
     
-    // --- INIZIO MODIFICA ---
+    
     {
       provide: APP_INITIALIZER,
       // La factory ora riceve sia KeycloakService sia PLATFORM_ID
@@ -32,9 +32,9 @@ export const appConfig: ApplicationConfig = {
               },
               initOptions: {
                 onLoad: 'check-sso',
-                // Questa riga ora è sicura perché viene eseguita solo nel browser
-                silentCheckSsoRedirectUri:
-                  window.location.origin + '/silent-check-sso.html',
+                
+                checkLoginIframe: false 
+                
               },
               loadUserProfileAtStartUp: true
             });
@@ -48,6 +48,6 @@ export const appConfig: ApplicationConfig = {
       // Aggiorniamo le dipendenze del provider
       deps: [KeycloakService, PLATFORM_ID],
     }
-    // --- FINE MODIFICA ---
+    
   ],
 };

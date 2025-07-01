@@ -1,46 +1,44 @@
 // File: src/app/app.component.ts
 
-import { Component, OnInit } from '@angular/core'; // <-- Importa OnInit
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AuthService } from './services/auth.service';
-import { KeycloakService } from 'keycloak-angular'; // <-- Importa anche KeycloakService
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet], // Non ci serve più AsyncPipe qui
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit { // <-- Implementa l'interfaccia OnInit
-
-  // 1. Dichiariamo delle proprietà semplici e sincrone
+export class AppComponent implements OnInit { // Implementiamo OnInit
+  
   public isLoggedIn = false;
   public username = '';
 
-  // 2. Inizializziamo i servizi nel costruttore
-  constructor(
-    private readonly authService: AuthService,
-    private readonly keycloakService: KeycloakService
-  ) {}
+  // Inizializziamo solo KeycloakService, che è tutto ciò che ci serve
+  constructor(private readonly keycloakService: KeycloakService) {}
 
-  // 3. Usiamo ngOnInit per controllare lo stato DOPO l'inizializzazione di Keycloak
+  // ngOnInit è il cuore della soluzione
   public async ngOnInit() {
-    // Controlliamo lo stato del login e aspettiamo il risultato
+    // 1. Controlliamo lo stato di login non appena il componente è pronto.
+    //    ngOnInit viene eseguito DOPO l'inizializzazione di Keycloak grazie all'APP_INITIALIZER,
+    //    quindi questa chiamata è sicura e ci darà lo stato corretto.
     this.isLoggedIn = await this.keycloakService.isLoggedIn();
-    
-    // Se l'utente è loggato, prendiamo anche il suo username
+
+    // 2. Se l'utente è loggato, recuperiamo il suo username.
     if (this.isLoggedIn) {
       this.username = this.keycloakService.getUsername();
     }
   }
 
-  // I metodi per il login e logout rimangono identici
+  // Il metodo per il login è semplice: delega a Keycloak
   public login(): void {
-    this.authService.login();
+    this.keycloakService.login();
   }
 
+  // Anche il logout delega a Keycloak
   public logout(): void {
-    this.authService.logout();
+    this.keycloakService.logout(window.location.origin);
   }
 }
