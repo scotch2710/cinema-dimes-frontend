@@ -1,11 +1,86 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ApiService, Film, Spettacolo } from '../../services/api.service';
+import { AuthService } from '../../services/auth.service';
+import { forkJoin } from 'rxjs'; // Per eseguire più chiamate API in parallelo
+
+// Per usare [(ngModel)], dobbiamo importare FormsModule
+import { FormsModule } from '@angular/forms'; 
+import { CommonModule } from '@angular/common'; // Per usare @if, @for, ecc.
 
 @Component({
   selector: 'app-film-details',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, FormsModule], // Importiamo i moduli necessari
   templateUrl: './film-details.html',
-  styleUrl: './film-details.scss'
+  styleUrls: ['./film-details.scss']
 })
-export class FilmDetails {
+export class FilmDetails implements OnInit {
+  
+  film: Film | null = null;
+  spettacoli: Spettacolo[] = [];
+  isLoading = true;
 
+  // Dati per la prenotazione
+  spettacoloSelezionatoId: number | null = null;
+  numeroBiglietti = 1;
+
+  constructor(
+    private route: ActivatedRoute, // Per leggere i parametri dall'URL (l'ID del film)
+    private apiService: ApiService,
+    private authService: AuthService,
+    private router: Router // Per reindirizzare l'utente dopo l'acquisto
+  ) {}
+
+  ngOnInit(): void {
+    const filmId = this.route.snapshot.paramMap.get('id');
+    if (filmId) {
+      this.caricaDati(Number(filmId));
+    }
+  }
+
+  caricaDati(id: number): void {
+    this.isLoading = true;
+    // Eseguiamo entrambe le chiamate API (per film e spettacoli) in parallelo
+    forkJoin({
+      film: this.apiService.getFilmById(id),
+      spettacoli: this.apiService.getSpettacoliForFilm(id)
+    }).subscribe({
+      next: (risultati) => {
+        this.film = risultati.film;
+        this.spettacoli = risultati.spettacoli;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error("Errore nel caricamento dei dati", err);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  public async acquista(): Promise<void> {
+
+    // 1. CONTROLLO DEL LOGIN (LA PRIMA COSA DA FARE)
+    const eLoggato = await this.authService.isLoggedIn();
+    if (!eLoggato) {
+      // Se l'utente non è loggato:
+      alert("Devi effettuare il login per poter acquistare i biglietti.");
+      this.authService.login(); // Opzionale: reindirizza subito l'utente alla pagina di login
+      return; // FONDAMENTALE: blocca il resto della funzione e non procede con l'acquisto
+    }
+
+    if (this.numeroBiglietti<1){
+      alert("Va selezionato un numero di biglietti almeno pari ad 1")
+      return;
+    }
+    
+    // Qui andrà la chiamata al servizio per creare la prenotazione
+    console.log(`ACQUISTO: Utente ${this.authService.getUsername()} vuole acquistare ${this.numeroBiglietti} biglietti per lo spettacolo ID ${this.spettacoloSelezionatoId}`);
+    
+    // this.apiService.createPrenotazione(...)
+    //   .subscribe(risposta => {
+    //     alert("Prenotazione effettuata con successo!");
+    //     this.router.navigate(['/']); // Torna alla home
+    //   });
+  }
 }

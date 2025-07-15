@@ -1,1 +1,40 @@
-<p>film-details works!</p>
+@if (isLoading) {
+  <p>Caricamento in corso...</p>
+} @else if (film) {
+  <div class="detail-container">
+    <div class="poster-container">
+        <img class="poster" [src]="'http://localhost:8080' + film.percorsoLocandina" [alt]="film.titolo">
+    </div>
+        <div class="info">
+        <h1>{{ film.titolo }}</h1>
+        <p class="trama">{{ film.trama }}</p>
+        <p><strong>Durata:</strong> {{ film.durataMinuti }} minuti</p>
+
+        <hr>
+
+        <h2>Seleziona uno spettacolo</h2>
+        <div class="spettacoli-list">
+            @for (spettacolo of spettacoli; track spettacolo.id) {
+            <label class="spettacolo-option">
+                <input type="radio" name="spettacolo" [value]="spettacolo.id" [(ngModel)]="spettacoloSelezionatoId">
+                <span>{{ spettacolo.dataOraInizio | date:'dd/MM/yyyy HH:mm' }} - {{spettacolo.sala.nomeSala}} - Prezzo: {{ spettacolo.prezzoBiglietto | currency:'EUR' }}</span>
+            </label>
+            } @empty {
+            <p>Nessuno spettacolo in programma per questo film.</p>
+            }
+        </div>
+
+        <h2>Seleziona il numero di biglietti</h2>
+        <div class="biglietti-selector">
+            <input type="number" min="1" [(ngModel)]="numeroBiglietti">
+        </div>
+
+        <button class="acquista-btn" (click)="acquista()" [disabled]="!spettacoloSelezionatoId">
+            Acquista
+        </button>
+
+        </div>
+  </div>
+} @else {
+  <p>Film non trovato.</p>
+}

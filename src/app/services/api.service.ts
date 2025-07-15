@@ -12,6 +12,21 @@ export interface Film {
   percorsoLocandina: string;
 }
 
+export interface Sala {
+  id: number;
+  nomeSala: string;
+  capacitaTotale: number;
+}
+
+export interface Spettacolo {
+  id: number;
+  dataOraInizio: string; // La data arriverà come stringa
+  prezzoBiglietto: number;
+  postiDisponibili: number;
+  sala: Sala;
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -28,6 +43,15 @@ export class ApiService {
   public getFilms(): Observable<Film[]> {
     return this.http.get<Film[]>(`${this.backendUrl}/films`);
   }
+    // --- NUOVO METODO 1: Ottenere un film per ID ---
+  // Nota: questo endpoint andrà creato nel backend! (es. @GetMapping("/{id}") nel FilmController)
+  public getFilmById(id: number): Observable<Film> {
+    return this.http.get<Film>(`${this.backendUrl}/films/${id}`);
+  }
 
+  // --- NUOVO METODO 2: Ottenere gli spettacoli per un film ---
+  public getSpettacoliForFilm(filmId: number): Observable<Spettacolo[]> {
+    return this.http.get<Spettacolo[]>(`${this.backendUrl}/spettacoli?filmId=${filmId}`);
+  }
   // Qui in futuro aggiungerai gli altri metodi: getSpettacoli(), createPrenotazione(), etc.
 }
