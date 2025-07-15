@@ -26,6 +26,19 @@ export interface Spettacolo {
   sala: Sala;
 }
 
+// Interfaccia per i dati da INVIARE al backend per creare una prenotazione
+export interface PrenotazioneRequest {
+  spettacoloId: number | null;
+  numeroPosti: number;
+}
+
+// Interfaccia per l'oggetto Prenotazione che il backend restituisce dopo averla creata
+export interface Prenotazione {
+  id: number;
+  numeroBiglietti: number;
+  // Aggiungi qui altri campi se il tuo backend li restituisce (es. prezzoPagato)
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -53,5 +66,14 @@ export class ApiService {
   public getSpettacoliForFilm(filmId: number): Observable<Spettacolo[]> {
     return this.http.get<Spettacolo[]>(`${this.backendUrl}/spettacoli?filmId=${filmId}`);
   }
-  // Qui in futuro aggiungerai gli altri metodi: getSpettacoli(), createPrenotazione(), etc.
+    /**
+   * Esegue una richiesta POST per creare una nuova prenotazione.
+   * @param datiPrenotazione L'oggetto con l'ID dello spettacolo e il numero di posti.
+   * @returns Un Observable con i dati della prenotazione creata.
+   */
+  public createPrenotazione(datiPrenotazione: PrenotazioneRequest): Observable<Prenotazione> {
+    // La libreria keycloak-angular si occuperà di aggiungere automaticamente
+    // il token di autenticazione a questa richiesta.
+    return this.http.post<Prenotazione>(`${this.backendUrl}/prenotazioni`, datiPrenotazione);
+  }
 }

@@ -1,10 +1,10 @@
-// File: src/app/app.config.ts
 
 import { APP_INITIALIZER, ApplicationConfig, PLATFORM_ID } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common'; // <-- Importa questo
-import { provideHttpClient, withFetch } from '@angular/common/http';
-import { KeycloakService } from 'keycloak-angular';
+import { provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { KeycloakService, KeycloakBearerInterceptor } from 'keycloak-angular';
 
 import { routes } from './app.routes';
 
@@ -13,7 +13,14 @@ import { routes } from './app.routes';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withFetch()),
+    provideHttpClient(withFetch(), withInterceptorsFromDi()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: KeycloakBearerInterceptor,
+      multi: true,
+    },
+    
+    
     KeycloakService,
     
     

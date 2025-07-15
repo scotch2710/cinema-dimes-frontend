@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService, Film, Spettacolo } from '../../services/api.service';
+import { ApiService, Film, Spettacolo, PrenotazioneRequest  } from '../../services/api.service';
 import { AuthService } from '../../services/auth.service';
 import { forkJoin } from 'rxjs'; // Per eseguire più chiamate API in parallelo
 
@@ -77,10 +77,29 @@ export class FilmDetails implements OnInit {
     // Qui andrà la chiamata al servizio per creare la prenotazione
     console.log(`ACQUISTO: Utente ${this.authService.getUsername()} vuole acquistare ${this.numeroBiglietti} biglietti per lo spettacolo ID ${this.spettacoloSelezionatoId}`);
     
-    // this.apiService.createPrenotazione(...)
-    //   .subscribe(risposta => {
-    //     alert("Prenotazione effettuata con successo!");
-    //     this.router.navigate(['/']); // Torna alla home
-    //   });
+    const datiPrenotazione: PrenotazioneRequest = {
+      spettacoloId: this.spettacoloSelezionatoId,
+      numeroPosti: this.numeroBiglietti
+    };
+
+  // 3. Chiamiamo il servizio e gestiamo la risposta (sia successo che errore)
+    console.log("Invio richiesta di prenotazione:", datiPrenotazione);
+  
+    this.apiService.createPrenotazione(datiPrenotazione)
+      .subscribe({
+      // Questo blocco viene eseguito se la chiamata va a buon fine (il backend risponde con status 2xx)
+        next: (prenotazioneConfermata) => {
+          alert(`Prenotazione effettuata con successo! Il tuo ID di prenotazione è: ${prenotazioneConfermata.id}`);
+        // Dopo l'acquisto, reindirizziamo l'utente alla home page
+          this.router.navigate(['/']);
+        },
+      // Questo blocco viene eseguito se il backend restituisce un errore (status 4xx o 5xx)
+        error: (err) => {
+          console.error("Errore durante la prenotazione:", err);
+        // Mostra un messaggio di errore all'utente. Se il backend invia un messaggio specifico, lo mostriamo.
+          alert(`Errore: ${err.error.message || 'Non è stato possibile completare la prenotazione. I posti potrebbero essere esauriti.'}`);
+        }
+      });
+    
   }
 }
