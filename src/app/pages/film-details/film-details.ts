@@ -58,6 +58,28 @@ export class FilmDetails implements OnInit {
     });
   }
 
+
+
+
+  get costoTotale(): number {
+    // Se non è stato selezionato nessuno spettacolo, il costo è 0.
+    if (!this.spettacoloSelezionatoId) {
+      return 0;
+    }
+
+
+    const spettacoloSelezionato = this.spettacoli.find(s => s.id === this.spettacoloSelezionatoId);
+
+    // Se troviamo lo spettacolo, calcoliamo il totale. Altrimenti, per sicurezza, 0.
+    if (spettacoloSelezionato) {
+      return spettacoloSelezionato.prezzoBiglietto * this.numeroBiglietti;
+    }
+
+    return 5;
+  }
+
+
+
   public async acquista(): Promise<void> {
 
     // 1. CONTROLLO DEL LOGIN (LA PRIMA COSA DA FARE)

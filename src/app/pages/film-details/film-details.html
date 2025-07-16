@@ -14,16 +14,22 @@
 
         <h2>Seleziona uno spettacolo</h2>
         <div class="spettacoli-list">
+          <select class="spettacolo-select" [(ngModel)]="spettacoloSelezionatoId">
+          <option [ngValue]="null" disabled>Seleziona un orario...</option>
+    
             @for (spettacolo of spettacoli; track spettacolo.id) {
-            <label class="spettacolo-option">
-                <input type="radio" name="spettacolo" [value]="spettacolo.id" [(ngModel)]="spettacoloSelezionatoId">
-                <span>{{ spettacolo.dataOraInizio | date:'dd/MM/yyyy HH:mm' }} - {{spettacolo.sala.nomeSala}} - Prezzo: {{ spettacolo.prezzoBiglietto | currency:'EUR' }}</span>
-            </label>
-            } @empty {
-            <p>Nessuno spettacolo in programma per questo film.</p>
-            }
+              <option [ngValue]="spettacolo.id">
+                {{ spettacolo.dataOraInizio | date:'dd/MM/yyyy HH:mm' }} - {{ spettacolo.sala.nomeSala }} - Prezzo: {{spettacolo.prezzoBiglietto | currency:'EUR'}}
+              </option>
+              }
+          </select>
         </div>
-
+        @if (spettacoloSelezionatoId) {
+          <div class="costo-totale">
+            <h3>Costo Totale: {{ costoTotale | currency:'EUR' }}</h3>
+          </div>
+        }
+        
         <h2>Seleziona il numero di biglietti</h2>
         <div class="biglietti-selector">
             <input type="number" min="1" [(ngModel)]="numeroBiglietti">
