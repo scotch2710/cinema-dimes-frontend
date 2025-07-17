@@ -18,8 +18,16 @@ export interface Sala {
   capacitaTotale: number;
 }
 
+export interface SpettacoloRequestDTO {
+  filmId: number | null;
+  salaId: number | null;
+  dataOraInizio: string;
+  prezzoBiglietto: number;
+}
+
 export interface Spettacolo {
   id: number;
+  film: Film;
   dataOraInizio: string; // La data arriverà come stringa
   prezzoBiglietto: number;
   postiDisponibili: number;
@@ -62,7 +70,7 @@ export class ApiService {
     return this.http.get<Film>(`${this.backendUrl}/films/${id}`);
   }
 
-  // --- NUOVO METODO 2: Ottenere gli spettacoli per un film ---
+ 
   public getSpettacoliForFilm(filmId: number): Observable<Spettacolo[]> {
     return this.http.get<Spettacolo[]>(`${this.backendUrl}/spettacoli?filmId=${filmId}`);
   }
@@ -75,5 +83,31 @@ export class ApiService {
     // La libreria keycloak-angular si occuperà di aggiungere automaticamente
     // il token di autenticazione a questa richiesta.
     return this.http.post<Prenotazione>(`${this.backendUrl}/prenotazioni`, datiPrenotazione);
+  }
+
+    public getAllSale(): Observable<Sala[]> {
+      return this.http.get<Sala[]>(`${this.backendUrl}/sale`);
+  }
+
+    /**
+   * Esegue una richiesta POST per aggiungere un nuovo film al database.
+   * @param datiFilm L'oggetto con i dati del nuovo film da creare.
+   * @returns Un Observable con i dati del film creato, restituito dal backend.
+   */
+  public aggiungiFilm(datiFilm: Film): Observable<Film> {
+    // Esegue la richiesta POST all'endpoint /api/films.
+    // L'interceptor di Keycloak che hai configurato si occuperà
+    // di allegare automaticamente il token dell'admin a questa richiesta.
+    return this.http.post<Film>(`${this.backendUrl}/films`, datiFilm);
+  }
+
+    /**
+   * Esegue una richiesta POST per creare un nuovo spettacolo.
+   * @param datiSpettacolo L'oggetto DTO con i dati del nuovo spettacolo.
+   * @returns Un Observable con i dati dello spettacolo creato.
+   */
+  public creaSpettacolo(datiSpettacolo: SpettacoloRequestDTO): Observable<Spettacolo> {
+    // L'interceptor di Keycloak allegherà automaticamente il token dell'admin a questa richiesta.
+    return this.http.post<Spettacolo>(`${this.backendUrl}/spettacoli`, datiSpettacolo);
   }
 }

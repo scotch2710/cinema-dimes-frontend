@@ -1,0 +1,22 @@
+<div class="form-container">
+  <h3>Aggiungi un Nuovo Film</h3>
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="titolo">Titolo</label>
+      <input type="text" id="titolo" name="titolo" [(ngModel)]="nuovoFilm.titolo" required>
+    </div>
+    <div class="form-group">
+      <label for="trama">Trama</label>
+      <textarea id="trama" name="trama" [(ngModel)]="nuovoFilm.trama" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="durata">Durata (minuti)</label>
+      <input type="number" id="durata" name="durata" [(ngModel)]="nuovoFilm.durataMinuti" required>
+    </div>
+    <div class="form-group">
+      <label for="locandina">Percorso Locandina</label>
+      <input type="text" id="locandina" name="locandina" [(ngModel)]="nuovoFilm.percorsoLocandina" placeholder="/images/nomefile.jpg" required>
+    </div>
+    <button type="submit">Aggiungi Film</button>
+  </form>
+</div>
