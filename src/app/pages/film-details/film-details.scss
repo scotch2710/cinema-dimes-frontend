@@ -1,35 +1,34 @@
-// Stile per il contenitore principale che gestirà il layout a due colonne
 .detail-container {
-  display: flex;         // <-- 1. Attiva la modalità Flexbox!
-  align-items: flex-start; // <-- 2. Allinea gli elementi in alto (la tua richiesta)
-  gap: 40px;             // <-- 3. Crea uno spazio tra la locandina e il testo
-  padding: 40px;         // Aggiunge un po' di respiro intorno a tutto
+  display: flex;         
+  align-items: flex-start; 
+  gap: 40px;             
+  padding: 40px;        
 }
 
-// Stile per il blocco delle informazioni (la colonna di destra)
+// stile per il blocco delle informazioni 
 .info {
-  flex: 1; // Fa in modo che questo blocco occupi tutto lo spazio rimanente in larghezza
+  flex: 1; // fa in modo che questo blocco occupi tutto lo spazio rimanente in larghezza
 }
 
 .trama{
   font-size: 1.1rem;
 }
-/* Stile per il contenitore della locandina */
+//stile per il contenitore della locandina
 .poster-container {
-  width: 300px; /* Imposta la larghezza fissa che desideri */
-  height: 450px; /* Imposta l'altezza fissa (la proporzione 2:3 è tipica dei poster) */
+  width: 300px; 
+  height: 450px; 
   
-  flex-shrink: 0; /* Utile se usi flexbox, per evitare che si rimpicciolisca */
-  border-radius: 8px; /* Angoli arrotondati per un look più moderno */
-  overflow: hidden; /* FONDAMENTALE: nasconde le parti dell'immagine che escono dai bordi */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Un'ombra per dare profondità */
+  flex-shrink: 0; 
+  border-radius: 8px; //angoli arrotondati
+  overflow: hidden; //nasconde le parti dell'immagine che escono dai bordi
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); //ombra
 }
 
-/* Stile per l'immagine all'interno del contenitore */
+
 .poster-container img {
-  width: 100%;       /* L'immagine occupa tutta la larghezza del contenitore */
-  height: 100%;      /* L'immagine occupa tutta l'altezza del contenitore */
+  width: 100%;       
+  height: 100%;      
   
   
-  object-fit: cover; /* Adatta l'immagine per riempire lo spazio, mantenendo le proporzioni e tagliando l'eccesso */
+  object-fit: cover; 
 }

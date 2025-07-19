@@ -12,7 +12,7 @@ export const routes: Routes = [
   { 
     path: 'admin', 
     component: Dashboard,
-    canActivate: [adminGuard] // Applica il "buttafuori" a questa rotta e a tutte le sue figlie
-    // Potresti aggiungere qui delle rotte figlie per i form
+    canActivate: [adminGuard] // applica il blocco al path admin
+
   }
 ];

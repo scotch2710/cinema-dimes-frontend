@@ -6,12 +6,12 @@ export const adminGuard = () => {
   const keycloakService = inject(KeycloakService);
   const router = inject(Router);
 
-  // Controlla se l'utente è loggato E se ha il ruolo 'ROLE_ADMIN'
+  // controlla se l'utente è loggato e se ha il ruolo admin
   if (keycloakService.isLoggedIn() && keycloakService.getUserRoles().includes('ROLE_ADMIN')) {
-    return true; // L'utente può accedere
+    return true; 
   }
 
-  // Se non è un admin, lo reindirizza alla home page
+  // se non è un admin lo reindirizza alla home page
   router.navigate(['/']);
   return false;
 };

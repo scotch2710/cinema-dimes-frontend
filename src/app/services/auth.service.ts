@@ -18,7 +18,7 @@ export class AuthService {
   }
 
   public logout(): void {
-    // Al logout, reindirizziamo l'utente alla pagina principale del nostro sito
+    // al logout reindirizzo l'utente alla home del sito
     this.keycloakService.logout(window.location.origin);
   }
 
